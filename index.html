@@ -10,7 +10,7 @@
     <script>
         console.log("Script started!");
 
-        // Competitors data
+        // Competitors data (correct format)
         const competitors = [
             { name: "Shabana", pagesRead: [380, 310, 180], totalPages: [420, 310, 250] },
             { name: "Madina", pagesRead: [520, 260, 210], totalPages: [580, 390, 210] },
@@ -18,33 +18,47 @@
             { name: "Hasiba", pagesRead: [490, 380, 180], totalPages: [510, 400, 180] }
         ];
 
-        function calculateProgress(pRead, pTotal) { return (pRead / pTotal) * 100; }
-        function sum(arr) { return arr.reduce((a,b)=>a+b,0); }
+        function calculateProgress(pRead, pTotal) { 
+            return (pRead / pTotal) * 100; 
+        }
+
+        function sum(arr) { 
+            return arr.reduce((a, b) => a + b, 0); 
+        }
+
         function avgCompletion(pReadArr, pTotalArr) {
             let total = 0;
-            for(let i=0; i<pReadArr.length; i++) total += calculateProgress(pReadArr[i], pTotalArr[i]);
+            for (let i = 0; i < pReadArr.length; i++) {
+                total += calculateProgress(pReadArr[i], pTotalArr[i]);
+            }
             return total / pReadArr.length;
         }
-        function awardPoints(totalPages, completionRate) { return totalPages + (completionRate * 2); }
+
+        function awardPoints(totalPages, completionRate) { 
+            return totalPages + (completionRate * 2); 
+        }
+
         function getTitle(pages) {
-            if(pages >= 400) return "🔹 Reading Star";
-            if(pages >= 250) return "🔸 Dedicated Reader";
+            if (pages >= 400) return "🔹 Reading Star";
+            if (pages >= 250) return "🔸 Dedicated Reader";
             return "🌱 Rising Reader";
         }
 
         let leaderboard = [];
-        for(let c of competitors) {
+
+        for (let c of competitors) {
             let totalRead = sum(c.pagesRead);
             let avgComp = avgCompletion(c.pagesRead, c.totalPages);
             let score = awardPoints(totalRead, avgComp);
-            leaderboard.push({name: c.name, totalRead, avgComp, score});
+            leaderboard.push({ name: c.name, totalRead, avgComp, score });
             console.log(`${c.name}: ${totalRead} pages, ${avgComp.toFixed(1)}% avg, score ${score.toFixed(2)} → ${getTitle(totalRead)}`);
         }
 
         let champion = leaderboard[0];
-        for(let i=1; i<leaderboard.length; i++) {
-            if(leaderboard[i].score > champion.score) champion = leaderboard[i];
+        for (let i = 1; i < leaderboard.length; i++) {
+            if (leaderboard[i].score > champion.score) champion = leaderboard[i];
         }
+
         console.log(`\n🏆 CHAMPION: ${champion.name} with ${champion.score.toFixed(2)} points! 🏆`);
         console.log("Reflection: This project helped me understand loops, arrays, and dynamic winner detection.");
     </script>
